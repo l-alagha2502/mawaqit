@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf9f6">
+  <title>Mawaqit</title>
+  <link rel="icon" href="/public/logo-white.svg" type="image/svg+xml" sizes="128x128">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Mawaqit home">
+        <img src="/public/logo.svg" alt="" width="34" height="34">
+        <span>Mawaqit</span>
+      </a>
+      <time class="today" id="today"></time>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-heading">
+        <h1 id="page-heading">Your local prayer times.</h1>
+        <p class="eyebrow" id="location-label">SEE YOU IN HEAVEN BROTHER</p>
+        <div class="location-row">
+          <span class="location-dot" aria-hidden="true"></span>
+          <span id="location-display">Finding your location...</span>
+        </div>
+      </section>
+
+      <section class="focus-panel" aria-label="Current time and next prayer">
+        <div>
+          <p class="panel-label">Local time</p>
+          <time class="clock" id="clock">--:--:--</time>
+        </div>
+        <div class="next-prayer">
+          <p class="panel-label">Next prayer</p>
+          <div class="next-line"><strong id="next-name">Calculating</strong><span id="countdown">--h --m</span></div>
+          <p class="next-meta" id="next-meta">Preparing today's schedule</p>
+        </div>
+      </section>
+
+      <section class="schedule-section" aria-labelledby="schedule-heading">
+        <div class="section-heading">
+          <h2 id="schedule-heading">Today's schedule</h2>
+          <span id="method-label">Calculation · MWL</span>
+        </div>
+        <div class="prayer-grid" id="prayer-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Mawaqit / All rights reserved</span>
+      <img src="/public/logo.svg" alt="Mawaqit" width="42" height="42">
+      <a href="https://lqmn.page" target="_blank" rel="noopener noreferrer">MADE BY LUQMAN <span>(aka. LUQA)</span> ↗</a>
+    </footer>
+  </div>
+
+  <dialog class="location-dialog" id="location-dialog" aria-labelledby="dialog-title">
+    <form method="dialog" id="location-form">
+      <button class="close-dialog" value="cancel" aria-label="Close location search">×</button>
+      <p class="eyebrow">Set your place</p>
+      <h2 id="dialog-title">Where are you today?</h2>
+      <label for="city-search">Search a city</label>
+      <input id="city-search" name="city" type="search" placeholder="Try London, Jakarta..." autocomplete="off">
+      <div class="city-results" id="city-results"></div>
+      <p class="dialog-note">Your location stays in this browser and is used only to calculate prayer times.</p>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/adhan@4.4.6/lib/bundles/adhan.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

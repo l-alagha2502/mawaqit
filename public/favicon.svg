@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+  <defs>
+    <filter id="white"><feComponentTransfer><feFuncR type="table" tableValues="1 1"/><feFuncG type="table" tableValues="1 1"/><feFuncB type="table" tableValues="1 1"/></feComponentTransfer></filter>
+  </defs>
+  <image href="/public/logo.svg" width="1080" height="1080" filter="url(#white)"/>
+</svg>
