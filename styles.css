@@ -27,9 +27,9 @@ h1 { width: 100%; margin-bottom: 24px; font: 400 clamp(43px, 7vw, 82px)/.93 var(
 h1 em { color: var(--accent); font-style: italic; }
 .location-row { display: flex; align-items: center; justify-content: flex-start; gap: 9px; color: var(--muted); font-size: 11px; }
 .location-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-.focus-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 26px 0 34px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.focus-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 26px 0 34px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
 .clock { display: block; font-size: clamp(35px, 6vw, 72px); letter-spacing: -.09em; line-height: .95; }
-.next-prayer { padding-left: 40px; border-left: 1px solid var(--line); }
+.current-prayer, .next-prayer { padding-left: 40px; border-left: 1px solid var(--line); }
 .next-line { display: flex; align-items: baseline; gap: 18px; }
 .next-line strong { font: 400 clamp(25px, 3.2vw, 40px) var(--serif); letter-spacing: -.04em; }
 .next-line span { color: var(--accent); font-size: 12px; white-space: nowrap; }
@@ -73,7 +73,7 @@ h1 em { color: var(--accent); font-style: italic; }
   .intro { display: block; padding: 65px 0 45px; }
   .location-row { margin-top: 34px; }
   .focus-panel { grid-template-columns: 1fr; gap: 28px; }
-  .next-prayer { padding: 23px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .current-prayer, .next-prayer { padding: 23px 0 0; border-left: 0; border-top: 1px solid var(--line); }
   .notification-settings { display: block; }
   .notification-status { margin-top: 10px; }
   .schedule-section { padding: 54px 0 65px; }
