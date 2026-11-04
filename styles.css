@@ -34,6 +34,11 @@ h1 em { color: var(--accent); font-style: italic; }
 .next-line strong { font: 400 clamp(25px, 3.2vw, 40px) var(--serif); letter-spacing: -.04em; }
 .next-line span { color: var(--accent); font-size: 12px; white-space: nowrap; }
 .next-meta { margin: 12px 0 0; color: var(--muted); font-size: 11px; }
+.notification-settings { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 16px; padding-top: 21px; border-top: 1px solid var(--line); }
+.notification-button { padding: 10px 13px; border: 1px solid var(--ink); background: transparent; cursor: pointer; font-size: 11px; }
+.notification-button:hover { color: var(--accent); border-color: var(--accent); }
+.notification-button:disabled { color: var(--muted); border-color: var(--line); cursor: default; }
+.notification-status { margin: 0; color: var(--muted); font-size: 10px; }
 .schedule-section { padding: 70px 0 90px; }
 .section-heading { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 17px; }
 .section-heading h2 { margin: 0; font: 400 26px var(--serif); letter-spacing: -.04em; }
@@ -69,6 +74,8 @@ h1 em { color: var(--accent); font-style: italic; }
   .location-row { margin-top: 34px; }
   .focus-panel { grid-template-columns: 1fr; gap: 28px; }
   .next-prayer { padding: 23px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .notification-settings { display: block; }
+  .notification-status { margin-top: 10px; }
   .schedule-section { padding: 54px 0 65px; }
   .prayer-grid { grid-template-columns: repeat(2, 1fr); }
   .prayer-card:nth-child(2n) { border-right: 0; }

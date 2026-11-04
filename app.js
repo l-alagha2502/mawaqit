@@ -18,6 +18,8 @@ const $ = (id) => document.getElementById(id);
 let coordinates = null;
 let schedule = null;
 let locationLabel = 'Your local prayer times';
+let notificationTimeouts = [];
+let scheduleDate = null;
 
 function dayOfYear(date) { return Math.floor((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 86400000); }
 function radians(value) { return value * Math.PI / 180; }
@@ -84,6 +86,57 @@ function calculatePrayerTimes(date, latitude, longitude) {
 }
 function updateDate() { const now = new Date(); $('today').textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); $('clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }); }
 
+function dateKey(date = new Date()) { return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`; }
+function clearNotificationTimers() {
+  notificationTimeouts.forEach((timeout) => clearTimeout(timeout));
+  notificationTimeouts = [];
+}
+function setNotificationStatus(message) { $('notification-status').textContent = message; }
+function scheduleNotifications() {
+  clearNotificationTimers();
+  if (!schedule || !coordinates || !('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = new Date();
+  prayers.forEach((prayer) => {
+    const prayerDate = schedule[prayer.key];
+    if (!prayerDate || prayerDate <= now) return;
+    notificationTimeouts.push(setTimeout(() => {
+      new Notification('Mawaqit', { body: `It's time to pray ${prayer.name}` });
+      scheduleNotifications();
+    }, prayerDate.getTime() - now.getTime()));
+  });
+}
+async function enableNotifications() {
+  if (!('Notification' in window)) {
+    setNotificationStatus('Notifications are not supported by this browser.');
+    return;
+  }
+  if (!window.isSecureContext) {
+    setNotificationStatus('Notifications require a secure connection.');
+    return;
+  }
+  const permission = await Notification.requestPermission();
+  if (permission === 'granted') {
+    $('notification-button').textContent = 'Prayer notifications enabled';
+    setNotificationStatus('You will be notified at each prayer time.');
+    scheduleNotifications();
+  } else {
+    setNotificationStatus(permission === 'denied' ? 'Notifications are blocked in your browser.' : 'Notification permission was not granted.');
+  }
+}
+function updateNotificationControl() {
+  const button = $('notification-button');
+  if (!('Notification' in window)) {
+    button.disabled = true;
+    setNotificationStatus('Notifications are not supported by this browser.');
+  } else if (Notification.permission === 'granted') {
+    button.textContent = 'Prayer notifications enabled';
+    setNotificationStatus('You will be notified at each prayer time.');
+    scheduleNotifications();
+  } else if (Notification.permission === 'denied') {
+    setNotificationStatus('Notifications are blocked in your browser.');
+  }
+}
+
 function render() {
   const now = new Date();
   const entries = prayers.map((prayer, index) => ({ ...prayer, date: schedule[prayer.key], index }));
@@ -101,7 +154,7 @@ function render() {
 }
 function setLocation(latitude, longitude, name) {
   coordinates = { latitude, longitude, name }; localStorage.setItem(storageKey, JSON.stringify(coordinates));
-  locationLabel = name || 'Your local prayer times'; $('location-display').textContent = locationLabel; schedule = calculatePrayerTimes(new Date(), latitude, longitude); render();
+  locationLabel = name || 'Your local prayer times'; $('location-display').textContent = locationLabel; schedule = calculatePrayerTimes(new Date(), latitude, longitude); scheduleDate = dateKey(); render(); scheduleNotifications();
 }
 function requestLocation() {
   const locationDisplay = $('location-display');
@@ -124,7 +177,16 @@ function showCities(query = '') {
 }
 
 $('city-search').addEventListener('input', (event) => showCities(event.target.value));
-updateDate(); setInterval(() => { updateDate(); if (schedule) render(); }, 1000);
+$('notification-button').addEventListener('click', enableNotifications);
+updateNotificationControl();
+updateDate(); setInterval(() => {
+  updateDate();
+  if (schedule && scheduleDate !== dateKey()) {
+    if (coordinates) setLocation(coordinates.latitude, coordinates.longitude, coordinates.name);
+  } else if (schedule) {
+    render();
+  }
+}, 1000);
 try {
   const saved = JSON.parse(localStorage.getItem(storageKey));
   if (saved?.latitude) setLocation(saved.latitude, saved.longitude, `Lat: ${saved.latitude}, Lon: ${saved.longitude}`);
