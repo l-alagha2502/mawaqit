@@ -28,10 +28,15 @@
         </div>
       </section>
 
-      <section class="focus-panel" aria-label="Current time and next prayer">
+      <section class="focus-panel" aria-label="Current time, current prayer, and next prayer">
         <div>
           <p class="panel-label">Local time</p>
           <time class="clock" id="clock">--:--:--</time>
+        </div>
+        <div class="current-prayer">
+          <p class="panel-label">Current prayer</p>
+          <div class="next-line"><strong id="current-name">Calculating</strong></div>
+          <p class="next-meta" id="current-meta">Preparing today's schedule</p>
         </div>
         <div class="next-prayer">
           <p class="panel-label">Next prayer</p>

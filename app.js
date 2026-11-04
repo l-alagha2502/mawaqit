@@ -142,6 +142,12 @@ function render() {
   const entries = prayers.map((prayer, index) => ({ ...prayer, date: schedule[prayer.key], index }));
   let next = entries.find((entry) => entry.date && entry.date > now);
   if (!next) next = { ...entries[0], date: new Date(entries[0].date.getTime() + 86400000), tomorrow: true };
+  const current = entries[next.index - 1] || entries[entries.length - 1];
+  const currentDate = next.index === 0 && !next.tomorrow
+    ? new Date(current.date.getTime() - 86400000)
+    : current.date;
+  $('current-name').textContent = current.name;
+  $('current-meta').textContent = `${formatTime(currentDate)} · ${current.icon}`;
   $('next-name').textContent = next.name;
   $('next-meta').textContent = `${formatTime(next.date)} · ${next.tomorrow ? 'Tomorrow' : next.icon}`;
   const remaining = Math.max(0, next.date - now) / 60000;
